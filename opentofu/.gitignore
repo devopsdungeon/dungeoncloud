@@ -1,0 +1,4 @@
+.DS_Store
+.terraform*
+kubeconfig
+terraform.tfvars
