@@ -42,5 +42,6 @@ provider "helm" {
 }
 
 module "kube-bootstrap" {
-  source = "../../modules/kube-bootstrap"
+  source   = "../../modules/kube-bootstrap"
+  le_email = var.le_email
 }
