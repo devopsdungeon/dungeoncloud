@@ -47,7 +47,7 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: andre.kloster@domus-server.de
+    email: ${var.le_email}
     privateKeySecretRef:
       name: letsencrypt-staging-dns01-private-key
     solvers:
