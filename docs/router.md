@@ -18,6 +18,7 @@ Ein Interface, das sich im Proxmox Cluster befindet (WAN) und ein Interface, wel
 - Deaktiviere `Block private networks` (Weil WAN ein privates Netzwerk ist)
 - Firewall -> Rules -> WAN
 - `IPv4 * 	* 	* 	WAN address 	* 	* 	* 		Allow access from WAN to router` (Optional. Wird eingerichtet, weil WAN ein sicheres, privates Netzwerk ist. Ansonsten brauchen wir einen Jumphost im LAN)
+- OPNsense neustarten
 
 ### Virtual-IP
 - Ein neues VXLAN erstellen (ID=99)
