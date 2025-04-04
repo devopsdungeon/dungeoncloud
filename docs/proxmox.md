@@ -26,7 +26,8 @@ Auf allen Proxmox Servern den Linux-User erstellen
 
 ```sh
 useradd -m -k /etc/skel -s /bin/bash testuser
-sermod -aG sudo testuser
+usermod -aG sudo testuser
+passwd testuser
 ```
 
 Den neuen User bei Proxmox hinzufügen und einer Gruppe hinzufügen
