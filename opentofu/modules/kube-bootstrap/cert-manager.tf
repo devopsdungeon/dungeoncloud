@@ -17,6 +17,7 @@ resource "kubectl_manifest" "cloudflare_api_token_secret" {
     helm_release.sealed_secrets
   ]
   yaml_body = <<YAML
+---
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
@@ -39,6 +40,7 @@ resource "kubectl_manifest" "cert_manager_le_staging_clusterissuer" {
     kubectl_manifest.cloudflare_api_token_secret
   ]
   yaml_body = <<YAML
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -65,6 +67,7 @@ resource "kubectl_manifest" "cert_manager_le_clusterissuer" {
     kubectl_manifest.cloudflare_api_token_secret
   ]
   yaml_body = <<YAML
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:

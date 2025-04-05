@@ -10,6 +10,7 @@ resource "helm_release" "metallb" {
 resource "kubectl_manifest" "ipaddresspool_metallb_system_pool" {
   depends_on = [helm_release.metallb]
   yaml_body  = <<YAML
+---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -24,6 +25,7 @@ YAML
 resource "kubectl_manifest" "l2advertisement_metallb_system" {
   depends_on = [kubectl_manifest.ipaddresspool_metallb_system_pool]
   yaml_body  = <<YAML
+---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
