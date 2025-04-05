@@ -51,5 +51,6 @@ metadata:
 stringData:
   type: git
   url: https://github.com/devopsdungeon/dungeoncloud-cd-system.git
+  project: system
 YAML
 }
