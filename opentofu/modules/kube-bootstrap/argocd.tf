@@ -35,11 +35,8 @@ YAML
 }
 
 resource "kubectl_manifest" "argocd_repository_system" {
-  depends_on = [
-    helm_release.argocd,
-    kubectl_manifest.argocd_project_system
-  ]
-  yaml_body = <<YAML
+  depends_on = [kubectl_manifest.argocd_project_system]
+  yaml_body  = <<YAML
 ---
 apiVersion: v1
 kind: Secret
@@ -52,5 +49,32 @@ stringData:
   type: git
   url: https://github.com/devopsdungeon/dungeoncloud-cd-system.git
   project: system
+YAML
+}
+
+resource "kubectl_manifest" "argocd_app_system" {
+  depends_on = [kubectl_manifest.argocd_repository_system]
+  yaml_body  = <<YAML
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-system
+  namespace: argocd
+spec:
+  project: system
+  source:
+    repoURL: https://github.com/devopsdungeon/dungeoncloud-cd-system.git
+    path: argocd
+    targetRevision: main
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 YAML
 }
