@@ -1,0 +1,5 @@
+---
+- name: Install default packages
+  ansible.builtin.include_tasks: packages.yaml
+- name: Configure users
+  ansible.builtin.include_tasks: users.yaml

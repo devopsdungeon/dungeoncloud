@@ -1,0 +1,5 @@
+---
+- name: Install default packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+  loop: "{{ common_base_packages }}"

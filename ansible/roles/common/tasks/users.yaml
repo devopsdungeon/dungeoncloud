@@ -1,0 +1,74 @@
+---
+- name: Create dod user if not exists and add to sudo group
+  user:
+    name: dod
+    shell: /bin/bash
+    state: present
+    groups: sudo
+    append: yes
+- name: Ensure directories for .bashrc exist
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "0700"
+  with_items:
+    - { path: "/root", owner: "root", group: "root" }
+    - { path: "/home/dod", owner: "dod", group: "dod" }
+- name: Copy .bashrc file for root and dod
+  copy:
+    src: files/users/common/bashrc
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "0640"
+    backup: yes
+  with_items:
+    - { dest: "/root/.bashrc", owner: "root", group: "root" }
+    - { dest: "/home/dod/.bashrc", owner: "dod", group: "dod" }
+- name: Copy .bash_profile file for root and dod
+  copy:
+    src: files/users/common/bash_profile
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "0640"
+    backup: yes
+  with_items:
+    - { dest: "/root/.bash_profile", owner: "root", group: "root" }
+    - { dest: "/home/dod/.bash_profile", owner: "dod", group: "dod" }
+- name: Copy bash_prompt file for users
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "0644"
+  with_items:
+    - {
+        src: "files/users/root/bash_prompt",
+        dest: "/root/.bash_prompt",
+        owner: "root",
+        group: "root",
+      }
+    - {
+        src: "files/users/user/bash_prompt",
+        dest: "/home/dod/.bash_prompt",
+        owner: "dod",
+        group: "dod",
+      }
+- name: Create empty bash_aliases and bash_custom files for users
+  file:
+    path: "{{ item.path }}"
+    state: touch
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "0644"
+    modification_time: preserve
+    access_time: preserve
+  with_items:
+    - { path: "/root/.bash_aliases", owner: "root", group: "root" }
+    - { path: "/root/.bash_custom", owner: "root", group: "root" }
+    - { path: "/home/dod/.bash_aliases", owner: "dod", group: "dod" }
+    - { path: "/home/dod/.bash_custom", owner: "dod", group: "dod" }

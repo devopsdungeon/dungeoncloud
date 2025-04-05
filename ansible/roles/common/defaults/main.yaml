@@ -1,0 +1,21 @@
+---
+common_base_packages:
+  - apt-transport-https
+  - avahi-daemon
+  - chrony
+  - curl
+  - dbus
+  - fzf
+  - git
+  - gnupg
+  - htop
+  - iputils-ping
+  - less
+  - lsb-release
+  - man-db
+  - neofetch
+  - net-tools
+  - rsync
+  - sudo
+  - vim
+  - wget

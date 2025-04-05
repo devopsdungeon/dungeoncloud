@@ -1,0 +1,7 @@
+---
+- name: Run nfs role
+  hosts: storage
+  become: true
+  roles:
+    # ansible-galaxy role install geerlingguy.nfs
+    - { role: geerlingguy.nfs }
