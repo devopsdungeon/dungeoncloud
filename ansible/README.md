@@ -19,9 +19,12 @@ ansible-playbooks
 ## Anforderungen
 - Ansible >= 2.9.10
 
-# Dry-Run
+## Dry-Run
+```
 ansible-playbook -i hosts.yaml common.yaml -K --diff --check
+```
 
-# Run
+## Run
+```
 ansible-playbook -i hosts.yaml common.yaml -K --diff
 ```
