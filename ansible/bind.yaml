@@ -1,0 +1,6 @@
+---
+- name: Run bind role
+  hosts: nis
+  become: true
+  roles:
+    - bind

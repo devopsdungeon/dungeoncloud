@@ -1,0 +1,41 @@
+{% for zone, zone_config in zones.items() %}
+zone "{{ zone }}" {
+    type master;
+    file "{{ zone_config.filepath | default('/var/lib/bind/zones') }}/{{ zone }}";
+{% if zone_config.allow_transfer is defined %}
+    allow-transfer {
+{% for item in zone_config.allow_transfer %}
+        {% if item.startswith('key ') %}{{ item }};
+{% else %}{{ item }};
+{% endif %}{% endfor %}
+    };
+{% endif %}
+{% if zone_config.update_policy is defined %}
+    update-policy {
+{% for policy in zone_config.update_policy %}
+        grant {{ policy.key }} {{ policy.match | default('zonesub') }} {{ policy.types | default('ANY') }};
+{% endfor %}
+    };
+{% endif %}
+};
+
+{% endfor %}
+{% if slave_zones is defined %}
+{% for slave_zone, details in slave_zones.items() %}
+zone "{{ slave_zone }}" {
+    type slave;
+    file "{{ details.filepath | default('/var/lib/bind/zones') }}/{{ slave_zone }}";
+    masters { {% for master in details.masters %}{{ master }}; 
+{% endfor %}};
+{% if details.allow_transfer is defined %}
+    allow-transfer {
+{% for item in details.allow_transfer %}
+        {% if item.startswith('key ') %}{{ item }};
+{% else %}{{ item }};
+{% endif %}{% endfor %}
+    };
+{% endif %}
+};
+
+{% endfor %}
+{% endif %}
