@@ -44,7 +44,7 @@
   ansible.builtin.file:
     state: directory
     path: /var/lib/bind/zones
-    owner: root
+    owner: bind
     group: bind
     mode: '0750'
   notify: Restart bind
