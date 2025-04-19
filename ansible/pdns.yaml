@@ -1,0 +1,6 @@
+---
+- name: Run PowerDNS role
+  hosts: nis
+  become: true
+  roles:
+    - pdns

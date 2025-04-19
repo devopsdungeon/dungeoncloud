@@ -1,53 +1,31 @@
 ---
-bind:
-  key_files:
-    - filename: "externaldns-key"
-      dns_keys:
-        - name: "externaldns-key"
-          algorithm: "hmac-sha256"
-          secret: !vault |
-            $ANSIBLE_VAULT;1.1;AES256
-            34356334643834666661643061343764653133383165383633346130663534616561353037623831
-            6666613864613366373833333130633063623836313035330a323762653361656134376538323366
-            31623931346636646661316335383965356664663966383935336265383339663961393030343034
-            6163623165316639390a386466303734646235646431633161346433633532656461646530633764
-            64623463353936633237376639656166353136613765353138396634393739636134353164643363
-            6133356338373737333734326164323930393933623265323861
-  additional_includes:
-    - "/etc/bind/externaldns-key"
-  forwards:
-    - "10.123.1.1"
-  listen_address:
-    - "any"
-  allow_query:
-    - "127.0.0.1"
-    - "::1"
-    - "10.0.0.0/8"
-  allow_transfer:
-    - "10.55.1.2"
-    - "10.172.42.1"
-  allow_notify:
-    - "10.55.1.2"
-    - "10.172.42.1"
-  also_notify:
-    - "10.55.1.2"
-    - "10.172.42.1"
-zones:
-  intern.devopsdungeon.net:
-    filepath: "/var/lib/bind/zones"
-    allow_transfer:
-      - 'key "externaldns-key"'
-      - "10.123.1.2"
-    update_policy:
-      - key: "externaldns-key"
-        match: "zonesub"
-        types: "ANY"
-  1.123.10.in-addr.arpa:
-    filepath: "/var/lib/bind/zones"
-    allow_transfer:
-      - 'key "externaldns-key"'
-      - "10.123.1.2"
-    update_policy:
-      - key: "externaldns-key"
-        match: "zonesub"
-        types: "ANY"
+pdns:
+  api_key: !vault |
+    $ANSIBLE_VAULT;1.1;AES256
+    31613235373831393433353164393436626365376431356531323066633238376137656662653761
+    6132333738663163313836636339323436303234343533610a323861666132623630623934633163
+    30383339633134653835653864373766323961396334343062646566396536353261313462373134
+    3834663437643030610a383164323262663834376138623030373265343533373061666164623464
+    30383932343039353763356635636439376636316438316262633563613233373634
+  backend:
+    type: "sqlite"
+    sqlite:
+      location: "/var/lib/powerdns/pdns.sqlite3"
+  networks:
+    axfr:
+      - 127.0.0.0/8
+      - ::1
+      - 10.123.1.0/24
+    dnsupdate:
+      - 127.0.0.0/8
+      - ::1
+      - 10.123.1.0/24
+    notify:
+      - 0.0.0.0/0
+      - ::/0
+  webserver:
+    address: 0.0.0.0
+    allow_from:
+      - 127.0.0.0/8
+      - 10.123.1.0/24
+    enable: "yes"

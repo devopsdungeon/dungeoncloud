@@ -1,0 +1,32 @@
+---
+- name: Install PowerDNS and dependecies
+  ansible.builtin.apt:
+    pkg:
+      - pdns-server
+      - pdns-recursor
+      - pdns-backend-sqlite3
+      - sqlite3
+    update_cache: true
+- name: Create bind logs directory
+  ansible.builtin.file:
+    state: directory
+    path: /var/lib/powerdns
+    owner: pdns
+    group: pdns
+    mode: '02750'
+- name: Copy recursor.conf
+  ansible.builtin.template:
+    src: templates/etc/powerdns/recursor.conf.j2
+    dest: /etc/powerdns/recursor.conf
+    owner: pdns
+    group: pdns
+    mode: '0644'
+  notify: Restart pdns-recursor
+- name: Copy pdns.conf
+  ansible.builtin.template:
+    src: templates/etc/powerdns/pdns.conf.j2
+    dest: /etc/powerdns/pdns.conf
+    owner: pdns
+    group: pdns
+    mode: '0644'
+  notify: Restart pdns

@@ -1,6 +1,0 @@
-{% for key in item.dns_keys %}
-key "{{ key.name }}" {
-        algorithm {{ key.algorithm | default('hmac-sha256') }};
-        secret "{{ key.secret }}";
-};
-{% endfor %}
