@@ -21,7 +21,7 @@ allow-dnsupdate-from={{ pdns.networks.dnsupdate|join(',') }}
 #################################
 # allow-notify-from     Allow AXFR NOTIFY from these IP ranges. If empty, drop all incoming notifies.
 #
-allow-notify-from={{ pdns.networks.notify|join(',') }}
+allow-notify-from={{ pdns.networks.notify_from|join(',') }}
 
 #################################
 # allow-unsigned-autoprimary	Allow autoprimaries to create zones without TSIG signed NOTIFY
@@ -41,7 +41,7 @@ allow-unsigned-supermaster=yes
 #################################
 # also-notify	When notifying a zone, also notify these nameservers
 #
-# also-notify=
+also-notify={{ pdns.networks.also_notify|join(',') }}
 
 #################################
 # any-to-tcp	Answer ANY queries with tc=1, shunting to TCP
@@ -476,6 +476,9 @@ local-port=54
 # primary	Act as a primary
 #
 # primary=no
+{% if pdns.is_primary == "yes" %}
+primary=yes
+{% endif %}
 
 #################################
 # proxy-protocol-from	A Proxy Protocol header is only allowed from these subnets, and is mandatory then too.

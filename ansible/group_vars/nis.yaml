@@ -11,18 +11,20 @@ pdns:
     type: "sqlite"
     sqlite:
       location: "/var/lib/powerdns/pdns.sqlite3"
+  is_primary: "yes"
   networks:
+    also_notify:
+      - 10.55.1.2
     axfr:
       - 127.0.0.0/8
-      - ::1
       - 10.123.1.0/24
+      - 10.172.42.0/24
+      - 10.55.1.2/32
     dnsupdate:
       - 127.0.0.0/8
-      - ::1
       - 10.123.1.0/24
-    notify:
+    notify_from:
       - 0.0.0.0/0
-      - ::/0
   webserver:
     address: 0.0.0.0
     allow_from:
